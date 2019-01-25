@@ -28,29 +28,29 @@ public class MainActivity extends AppCompatActivity {
         Weatherinfo weatherinfo =new Weatherinfo();
 
         try{
-            if(textView.getText().toString().isEmpty())
+            if(editText.getText().toString().isEmpty())
             {
                 Toast.makeText(this, "enter the city name", Toast.LENGTH_SHORT).show();
+            }else {
+                String weatherdetails = weatherinfo.execute("https://api.openweathermap.org/data/2.5/weather?q=" +
+                        editText.getText().toString() + "&APPID=272e2cf91f2be45773876e2ea9c263fb").get();
+                // Log.i("get",weatherdetails);
+                JSONObject jsonObject = new JSONObject(weatherdetails);
+                String weather = jsonObject.getString("weather");
+
+                JSONArray jsonArray = new JSONArray(weather);
+
+                String main = "";
+                String description = "";
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject arrrobject = jsonArray.getJSONObject(i);
+                    main = arrrobject.getString("main");
+                    description = arrrobject.getString("description");
+                }
+                textView.setText("main :" + main + "\n" + "description :" + description);
+
             }
-            String weatherdetails = weatherinfo.execute("https://api.openweathermap.org/data/2.5/weather?q="+
-                    editText.getText().toString()+"&APPID=272e2cf91f2be45773876e2ea9c263fb").get();
-           // Log.i("get",weatherdetails);
-            JSONObject jsonObject =new JSONObject(weatherdetails);
-            String weather =jsonObject.getString("weather");
-
-            JSONArray jsonArray =new JSONArray(weather);
-
-           String main ="";
-            String description ="";
-
-            for(int i=0;i<jsonArray.length();i++)
-            {
-                JSONObject arrrobject =jsonArray.getJSONObject(i);
-                main = arrrobject.getString("main");
-                description =arrrobject.getString("description");
-            }
-            textView.setText("main :"+ main+"\n"+"description :"+description);
-
         }catch (Exception e)
         {e.printStackTrace();
 
