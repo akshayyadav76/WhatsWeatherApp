@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
         Weatherinfo weatherinfo =new Weatherinfo();
 
         try{
+            if(textView.getText().toString().isEmpty())
+            {
+                Toast.makeText(this, "enter the city name", Toast.LENGTH_SHORT).show();
+            }
             String weatherdetails = weatherinfo.execute("https://api.openweathermap.org/data/2.5/weather?q="+
                     editText.getText().toString()+"&APPID=272e2cf91f2be45773876e2ea9c263fb").get();
            // Log.i("get",weatherdetails);
